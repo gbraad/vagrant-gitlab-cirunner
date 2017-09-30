@@ -27,7 +27,13 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     sudo yum install -y docker
     curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | sudo bash
-    sudo yum install -y gitlab-runner  
+    sudo yum install -y gitlab-runner
+    sudo systemctl enable docker
+    sudo systemctl start docker
+    sudo groupadd docker
+    sudo usermod -a -G docker vagrant
+    sudo chgrp docker /var/run/docker.sock
+    sudo chmod g+w /var/run/docker.sock
   SHELL
 
 end
